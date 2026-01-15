@@ -48,7 +48,8 @@ const FUNNEL_COLORS = [
   "#ec4899",
 ];
 
-const formatCurrency = (value: number) => {
+const formatCurrency = (value: number | undefined | null) => {
+  if (value == null) return "$0";
   if (value >= 1000000) {
     return `$${(value / 1000000).toFixed(1)}M`;
   }
