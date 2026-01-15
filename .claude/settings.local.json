@@ -20,7 +20,8 @@
       "Bash(test:*)",
       "Bash(venv/Scripts/pip install:*)",
       "Bash(venv/Scripts/python -m alembic revision:*)",
-      "Bash(venv/Scripts/python:*)"
+      "Bash(venv/Scripts/python:*)",
+      "Bash(curl:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
