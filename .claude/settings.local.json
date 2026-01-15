@@ -3,7 +3,24 @@
     "allow": [
       "Bash(git init:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git remote add:*)",
+      "Bash(git branch:*)",
+      "Bash(git push:*)",
+      "Skill(ralph-wiggum:ralph-loop)",
+      "mcp__software-factory__list_work_orders",
+      "Bash(\"C:\\\\Users\\\\charl\\\\.claude\\\\plugins\\\\cache\\\\claude-plugins-official\\\\ralph-wiggum\\\\dbc4a7733cd4/scripts/setup-ralph-loop.sh\")",
+      "Bash(\"C:\\\\Users\\\\charl\\\\.claude\\\\plugins\\\\cache\\\\claude-plugins-official\\\\ralph-wiggum\\\\dbc4a7733cd4/scripts/setup-ralph-loop.sh\" \"Work through all phase 1 work orders from the software-factory MCP server\")",
+      "mcp__software-factory__get_work_order",
+      "mcp__software-factory__start_work_order",
+      "mcp__software-factory__complete_work_order",
+      "Bash(npm install:*)",
+      "mcp__software-factory__get_next_work_order",
+      "Bash(npx tsc:*)"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "software-factory"
+  ]
 }
