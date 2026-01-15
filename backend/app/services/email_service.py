@@ -1,11 +1,12 @@
 import asyncio
 import re
+import smtplib
 from datetime import datetime
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from typing import Optional
 from uuid import UUID
 
-import boto3
-from botocore.exceptions import ClientError
 from sqlmodel import Session, select
 
 from app.core.config import settings
@@ -24,19 +25,23 @@ logger = get_logger(__name__)
 
 
 class EmailService:
-    """Service for sending emails via AWS SES."""
+    """Service for sending emails via SMTP or logging (local dev)."""
 
     def __init__(self):
-        self.ses_client = boto3.client(
-            "ses",
-            region_name=settings.AWS_REGION,
-        )
-        self.rate_limit = settings.SES_RATE_LIMIT
-        self.batch_size = settings.SES_BATCH_SIZE
+        self.use_smtp = getattr(settings, 'USE_SMTP', False)
+        self.smtp_host = getattr(settings, 'SMTP_HOST', 'localhost')
+        self.smtp_port = getattr(settings, 'SMTP_PORT', 1025)
+        self.smtp_user = getattr(settings, 'SMTP_USER', None)
+        self.smtp_password = getattr(settings, 'SMTP_PASSWORD', None)
+        self.smtp_use_tls = getattr(settings, 'SMTP_USE_TLS', False)
+        self.sender_email = getattr(settings, 'SENDER_EMAIL', 'noreply@localhost')
+        self.sender_name = getattr(settings, 'SENDER_NAME', 'Okyaku CRM')
+        self.rate_limit = 10  # emails per second
+        self.batch_size = 50
 
     def _get_sender(self) -> str:
         """Get the formatted sender email."""
-        return f"{settings.SES_SENDER_NAME} <{settings.SES_SENDER_EMAIL}>"
+        return f"{self.sender_name} <{self.sender_email}>"
 
     def _personalize_content(
         self, content: str, personalization_data: dict
@@ -98,7 +103,7 @@ class EmailService:
         tracking_base_url: str = "",
     ) -> tuple[bool, Optional[str], Optional[str]]:
         """
-        Send a single email via AWS SES.
+        Send a single email via SMTP or log it (local dev mode).
 
         Returns:
             Tuple of (success, message_id, error_message)
@@ -115,25 +120,39 @@ class EmailService:
                     html_content, recipient_id, tracking_base_url
                 )
 
-            # Build message body
-            body = {"Html": {"Charset": "UTF-8", "Data": html_content}}
-            if text_content:
-                body["Text"] = {"Charset": "UTF-8", "Data": text_content}
+            if self.use_smtp:
+                # Send via SMTP
+                msg = MIMEMultipart('alternative')
+                msg['Subject'] = subject
+                msg['From'] = self._get_sender()
+                msg['To'] = to_email
 
-            response = self.ses_client.send_email(
-                Source=self._get_sender(),
-                Destination={"ToAddresses": [to_email]},
-                Message={
-                    "Subject": {"Charset": "UTF-8", "Data": subject},
-                    "Body": body,
-                },
-            )
+                if text_content:
+                    msg.attach(MIMEText(text_content, 'plain'))
+                msg.attach(MIMEText(html_content, 'html'))
 
-            message_id = response.get("MessageId")
-            logger.info(f"Email sent successfully to {to_email}, message_id: {message_id}")
-            return True, message_id, None
+                with smtplib.SMTP(self.smtp_host, self.smtp_port) as server:
+                    if self.smtp_use_tls:
+                        server.starttls()
+                    if self.smtp_user and self.smtp_password:
+                        server.login(self.smtp_user, self.smtp_password)
+                    server.send_message(msg)
 
-        except ClientError as e:
+                message_id = f"local-{datetime.utcnow().timestamp()}"
+                logger.info(f"Email sent via SMTP to {to_email}, message_id: {message_id}")
+                return True, message_id, None
+            else:
+                # Local dev mode - just log the email
+                message_id = f"dev-{datetime.utcnow().timestamp()}"
+                logger.info(
+                    f"[DEV MODE] Email logged (not sent):\n"
+                    f"  To: {to_email}\n"
+                    f"  Subject: {subject}\n"
+                    f"  Message ID: {message_id}"
+                )
+                return True, message_id, None
+
+        except Exception as e:
             error_message = str(e)
             logger.error(f"Failed to send email to {to_email}: {error_message}")
             return False, None, error_message
