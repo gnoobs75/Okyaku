@@ -18,7 +18,9 @@
       "mcp__software-factory__get_next_work_order",
       "Bash(npx tsc:*)",
       "Bash(test:*)",
-      "Bash(venv/Scripts/pip install:*)"
+      "Bash(venv/Scripts/pip install:*)",
+      "Bash(venv/Scripts/python -m alembic revision:*)",
+      "Bash(venv/Scripts/python:*)"
     ]
   },
   "enableAllProjectMcpServers": true,
