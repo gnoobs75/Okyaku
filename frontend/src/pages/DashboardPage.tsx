@@ -292,8 +292,8 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent>
             {funnelData.length > 0 ? (
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="h-[300px] min-h-[300px]">
+                <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200}>
                   <FunnelChart>
                     <Tooltip
                       formatter={(value, name, props) => [
@@ -346,8 +346,8 @@ export function DashboardPage() {
           </CardHeader>
           <CardContent>
             {forecastData.length > 0 ? (
-              <div className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="h-[300px] min-h-[300px]">
+                <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200}>
                   <BarChart data={forecastData}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month_label" />

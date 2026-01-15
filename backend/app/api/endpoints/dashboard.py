@@ -292,7 +292,7 @@ async def get_recent_activities(
         "activities": [
             {
                 "id": str(a.id),
-                "type": a.activity_type.value,
+                "type": a.type.value if hasattr(a.type, 'value') else a.type,
                 "subject": a.subject,
                 "activity_date": a.activity_date.isoformat(),
                 "contact_id": str(a.contact_id) if a.contact_id else None,
