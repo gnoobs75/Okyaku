@@ -39,14 +39,22 @@ import type {
   UpcomingTask,
 } from "@/types/dashboard";
 
+// Ronin color scheme for charts
 const FUNNEL_COLORS = [
-  "#3b82f6",
-  "#6366f1",
-  "#8b5cf6",
-  "#a855f7",
-  "#d946ef",
-  "#ec4899",
+  "#C52638", // Ronin Red (primary)
+  "#3F465B", // Dark Navy (secondary)
+  "#445781", // Muted Blue
+  "#39364E", // Dark Charcoal
+  "#6B7280", // Gray
+  "#9CA3AF", // Light Gray
 ];
+
+const CHART_COLORS = {
+  primary: "#C52638",
+  secondary: "#3F465B",
+  success: "#22c55e",
+  accent: "#445781",
+};
 
 const formatCurrency = (value: number | undefined | null) => {
   if (value == null) return "$0";
@@ -350,13 +358,13 @@ export function DashboardPage() {
                     <Bar
                       dataKey="expected_value"
                       name="Expected"
-                      fill="#3b82f6"
+                      fill={CHART_COLORS.primary}
                       radius={[4, 4, 0, 0]}
                     />
                     <Bar
                       dataKey="closed_value"
                       name="Closed"
-                      fill="#22c55e"
+                      fill={CHART_COLORS.secondary}
                       radius={[4, 4, 0, 0]}
                     />
                   </BarChart>
