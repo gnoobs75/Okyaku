@@ -42,3 +42,17 @@ def import_models() -> None:
     )
     from app.models.task import Task  # noqa: F401
     from app.models.user import User  # noqa: F401
+    from app.models.ai_predictions import (  # noqa: F401
+        LeadScore,
+        DealForecast,
+        ChurnRisk,
+    )
+    from app.models.recommendations import Recommendation  # noqa: F401
+    from app.models.agent import AgentTask, AgentAction  # noqa: F401
+    from app.models.conversation import ConversationAnalysis  # noqa: F401
+    from app.models.knowledge_base import (  # noqa: F401
+        KnowledgeDocument,
+        DocumentChunk,
+        RAGQuery,
+    )
+    from app.models.insights import Insight  # noqa: F401

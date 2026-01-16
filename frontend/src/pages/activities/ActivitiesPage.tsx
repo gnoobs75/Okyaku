@@ -4,7 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import { ActivityFormModal } from "./ActivityFormModal";
 import type { Activity, ActivityType } from "@/types/activities";
 import type { PaginatedResponse } from "@/types/crm";
@@ -28,6 +31,8 @@ const typeColors: Record<ActivityType, string> = {
 };
 
 export function ActivitiesPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("activities");
   const [activities, setActivities] = useState<Activity[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -83,6 +88,10 @@ export function ActivitiesPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="activities" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Activities</h1>

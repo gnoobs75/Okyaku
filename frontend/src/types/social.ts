@@ -220,3 +220,217 @@ export interface AccountPerformance {
   shares: number;
   engagement_rate: number;
 }
+
+// Best Time to Post types
+export interface BestHour {
+  day: number;
+  day_name: string;
+  hour: number;
+  hour_label: string;
+  avg_engagement_rate: number;
+  post_count: number;
+}
+
+export interface BestDay {
+  day: number;
+  day_name: string;
+  avg_engagement_rate: number;
+  post_count: number;
+}
+
+export interface PostingRecommendation {
+  day: string;
+  time: string;
+  engagement_rate: number;
+  confidence: "high" | "medium" | "low";
+}
+
+export interface BestTimesToPost {
+  best_hours: BestHour[];
+  best_days: BestDay[];
+  heatmap: number[][];
+  recommendations: PostingRecommendation[];
+  data_points: number;
+  analysis_period_days: number;
+}
+
+// Content Insights types
+export interface ContentLengthInsight {
+  category: string;
+  char_range: string;
+  avg_engagement_rate: number;
+  post_count: number;
+}
+
+export interface MediaImpact {
+  with_media?: {
+    avg_engagement_rate: number;
+    post_count: number;
+  };
+  without_media?: {
+    avg_engagement_rate: number;
+    post_count: number;
+  };
+}
+
+export interface HashtagInsight {
+  hashtag_count: number;
+  avg_engagement_rate: number;
+  post_count: number;
+}
+
+export interface ContentInsights {
+  content_length: ContentLengthInsight[];
+  media_impact: MediaImpact;
+  hashtag_performance: HashtagInsight[];
+  total_posts_analyzed: number;
+}
+
+// Platform Comparison types
+export interface PlatformComparison {
+  platform: SocialPlatform;
+  post_count: number;
+  total_impressions: number;
+  total_reach: number;
+  total_likes: number;
+  total_comments: number;
+  total_shares: number;
+  total_clicks: number;
+  avg_engagement_rate: number;
+}
+
+export interface PlatformComparisonResult {
+  platforms: PlatformComparison[];
+  period_days: number;
+}
+
+// AI Content Generation types
+export type ContentTone =
+  | "professional"
+  | "casual"
+  | "humorous"
+  | "inspirational"
+  | "educational"
+  | "promotional";
+
+export type ContentLength = "short" | "medium" | "long";
+
+export interface GeneratePostRequest {
+  topic: string;
+  platform: SocialPlatform;
+  tone?: ContentTone;
+  length?: ContentLength;
+  include_hashtags?: boolean;
+  include_emojis?: boolean;
+  include_cta?: boolean;
+  additional_context?: string;
+  brand_voice?: string;
+}
+
+export interface GeneratePostResponse {
+  success: boolean;
+  content?: string;
+  platform: SocialPlatform;
+  tone?: ContentTone;
+  length?: ContentLength;
+  char_count?: number;
+  model?: string;
+  error?: string;
+  usage?: {
+    input_tokens: number;
+    output_tokens: number;
+  };
+}
+
+export interface GenerateVariationsRequest {
+  content: string;
+  platform: SocialPlatform;
+  num_variations?: number;
+  tone?: ContentTone;
+}
+
+export interface GenerateVariationsResponse {
+  success: boolean;
+  variations?: string[];
+  platform: SocialPlatform;
+  error?: string;
+}
+
+export interface AdaptContentRequest {
+  content: string;
+  source_platform: SocialPlatform;
+  target_platform: SocialPlatform;
+}
+
+export interface AdaptContentResponse {
+  success: boolean;
+  original_content?: string;
+  adapted_content?: string;
+  source_platform: SocialPlatform;
+  target_platform: SocialPlatform;
+  char_count?: number;
+  error?: string;
+}
+
+export interface ImproveContentRequest {
+  content: string;
+  platform: SocialPlatform;
+  improvement_focus?: string;
+}
+
+export interface ImproveContentResponse {
+  success: boolean;
+  original_content?: string;
+  improved_content?: string;
+  changes?: string[];
+  tips?: string[];
+  platform: SocialPlatform;
+  error?: string;
+}
+
+export interface GenerateHashtagsRequest {
+  content: string;
+  platform: SocialPlatform;
+  count?: number;
+}
+
+export interface GenerateHashtagsResponse {
+  success: boolean;
+  hashtags?: string[];
+  platform: SocialPlatform;
+  error?: string;
+}
+
+export interface OllamaHealth {
+  status: "healthy" | "unavailable";
+  provider: string;
+  base_url: string;
+  available_models?: string[];
+  configured_model: string;
+  model_available?: boolean;
+  error?: string;
+}
+
+export interface AIContentStatus {
+  available: boolean;
+  provider: string;
+  model?: string;
+  embedding_model?: string;
+  base_url?: string;
+  health?: OllamaHealth;
+  features: {
+    content_generation: boolean;
+    lead_scoring: boolean;
+    deal_forecasting: boolean;
+    ai_chat: boolean;
+    ai_agents: boolean;
+    rag_search: boolean;
+  };
+  supported_platforms: SocialPlatform[];
+  supported_tones: ContentTone[];
+  supported_lengths: ContentLength[];
+  setup_instructions?: {
+    message: string;
+    steps: string[];
+  };
+}

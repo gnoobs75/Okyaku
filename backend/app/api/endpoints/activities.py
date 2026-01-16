@@ -34,6 +34,8 @@ async def list_activities(
     contact_id: Optional[UUID] = Query(default=None),
     company_id: Optional[UUID] = Query(default=None),
     deal_id: Optional[UUID] = Query(default=None),
+    owner_id: Optional[UUID] = Query(default=None),
+    created_by: Optional[UUID] = Query(default=None),
     date_from: Optional[datetime] = Query(default=None),
     date_to: Optional[datetime] = Query(default=None),
     sort_by: str = Query(default="activity_date"),
@@ -60,6 +62,10 @@ async def list_activities(
         query = query.where(Activity.company_id == company_id)
     if deal_id:
         query = query.where(Activity.deal_id == deal_id)
+    if owner_id:
+        query = query.where(Activity.owner_id == owner_id)
+    if created_by:
+        query = query.where(Activity.created_by == created_by)
     if date_from:
         query = query.where(Activity.activity_date >= date_from)
     if date_to:

@@ -12,10 +12,15 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportButton } from "@/components/ExportButton";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type { Company, PaginatedResponse } from "@/types/crm";
 
 export function CompaniesListPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("companies");
   const [companies, setCompanies] = useState<Company[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -49,6 +54,10 @@ export function CompaniesListPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="companies" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Companies</h1>

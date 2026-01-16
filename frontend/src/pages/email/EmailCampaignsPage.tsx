@@ -23,7 +23,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type { EmailCampaignWithMetrics, CampaignStatus } from "@/types/email";
 
 const statusColors: Record<CampaignStatus, string> = {
@@ -45,6 +48,8 @@ const statusIcons: Record<CampaignStatus, typeof Mail> = {
 };
 
 export function EmailCampaignsPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("email-campaigns");
   const [campaigns, setCampaigns] = useState<EmailCampaignWithMetrics[]>([]);
   const { get, isLoading } = useApi<EmailCampaignWithMetrics[]>();
 
@@ -94,6 +99,10 @@ export function EmailCampaignsPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="email-campaigns" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Email Campaigns</h1>

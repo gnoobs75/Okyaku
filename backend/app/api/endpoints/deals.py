@@ -34,10 +34,15 @@ async def list_deals(
     pipeline_id: Optional[UUID] = Query(default=None),
     stage_id: Optional[UUID] = Query(default=None),
     owner_id: Optional[UUID] = Query(default=None),
+    contact_id: Optional[UUID] = Query(default=None),
+    company_id: Optional[UUID] = Query(default=None),
+    deal_status: Optional[str] = Query(default=None, description="Filter by 'open' or 'closed'"),
     min_value: Optional[Decimal] = Query(default=None),
     max_value: Optional[Decimal] = Query(default=None),
     close_date_from: Optional[date] = Query(default=None),
     close_date_to: Optional[date] = Query(default=None),
+    expected_close_from: Optional[date] = Query(default=None),
+    expected_close_to: Optional[date] = Query(default=None),
     sort_by: str = Query(default="created_at"),
     sort_order: str = Query(default="desc", pattern="^(asc|desc)$"),
 ) -> PaginatedResponse[DealReadWithRelations]:
@@ -55,14 +60,26 @@ async def list_deals(
         query = query.where(Deal.stage_id == stage_id)
     if owner_id:
         query = query.where(Deal.owner_id == owner_id)
+    if contact_id:
+        query = query.where(Deal.contact_id == contact_id)
+    if company_id:
+        query = query.where(Deal.company_id == company_id)
+    if deal_status == "open":
+        query = query.where(Deal.actual_close_date.is_(None))
+    elif deal_status == "closed":
+        query = query.where(Deal.actual_close_date.isnot(None))
     if min_value is not None:
         query = query.where(Deal.value >= min_value)
     if max_value is not None:
         query = query.where(Deal.value <= max_value)
     if close_date_from:
-        query = query.where(Deal.expected_close_date >= close_date_from)
+        query = query.where(Deal.actual_close_date >= close_date_from)
     if close_date_to:
-        query = query.where(Deal.expected_close_date <= close_date_to)
+        query = query.where(Deal.actual_close_date <= close_date_to)
+    if expected_close_from:
+        query = query.where(Deal.expected_close_date >= expected_close_from)
+    if expected_close_to:
+        query = query.where(Deal.expected_close_date <= expected_close_to)
 
     # Get total count
     count_query = select(func.count()).select_from(query.subquery())

@@ -15,7 +15,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type { SocialAccount, SocialPlatform, AccountStatus } from "@/types/social";
 
 const platformIcons: Record<SocialPlatform, typeof Linkedin> = {
@@ -45,6 +48,8 @@ const statusIcons: Record<AccountStatus, typeof CheckCircle> = {
 };
 
 export function SocialAccountsPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("social-accounts");
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [isRefreshing, setIsRefreshing] = useState<string | null>(null);
 
@@ -94,6 +99,10 @@ export function SocialAccountsPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="social-accounts" />
+      )}
+
       <div className="flex items-center gap-4">
         <Link to="/social">
           <Button variant="ghost" size="icon">

@@ -20,7 +20,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import { PostFormModal } from "./PostFormModal";
 import type {
   SocialAccount,
@@ -70,6 +73,8 @@ interface CalendarDay {
 }
 
 export function SocialCalendarPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("social-calendar");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [accounts, setAccounts] = useState<SocialAccount[]>([]);
   const [posts, setPosts] = useState<SocialPostWithAnalytics[]>([]);
@@ -237,6 +242,10 @@ export function SocialCalendarPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="social-calendar" />
+      )}
+
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Social Media Calendar</h1>

@@ -13,6 +13,7 @@ from app.models.social_media import (
     SocialPost,
     SocialPostAnalytics,
 )
+from app.services.analytics_service import analytics_service
 
 router = APIRouter()
 
@@ -608,3 +609,112 @@ async def get_account_performance(
         )
 
     return result
+
+
+@router.get("/best-times")
+async def get_best_times_to_post(
+    session: SessionDep,
+    current_user: CurrentUserDep,
+    account_id: Optional[UUID] = Query(default=None),
+    platform: Optional[SocialPlatform] = Query(default=None),
+    days_lookback: int = Query(default=90, ge=7, le=365),
+) -> dict:
+    """
+    Get optimal posting times based on historical engagement data.
+
+    Returns:
+    - best_hours: Top 20 day/hour combinations ranked by engagement rate
+    - best_days: Days of week ranked by average engagement
+    - heatmap: 7x24 matrix of engagement rates (day x hour)
+    - recommendations: Top 5 recommended posting slots with confidence levels
+    """
+    user_id = UUID(current_user.sub)
+
+    # Validate account belongs to user if specified
+    if account_id:
+        account = session.exec(
+            select(SocialAccount).where(
+                SocialAccount.id == account_id,
+                SocialAccount.owner_id == user_id,
+            )
+        ).first()
+        if not account:
+            return {
+                "best_hours": [],
+                "best_days": [],
+                "heatmap": [[0] * 24 for _ in range(7)],
+                "recommendations": [],
+                "data_points": 0,
+                "analysis_period_days": days_lookback,
+            }
+
+    return await analytics_service.get_best_times_to_post(
+        session=session,
+        account_id=account_id,
+        platform=platform,
+        days_lookback=days_lookback,
+    )
+
+
+@router.get("/content-insights")
+async def get_content_performance_insights(
+    session: SessionDep,
+    current_user: CurrentUserDep,
+    account_id: Optional[UUID] = Query(default=None),
+    days_lookback: int = Query(default=30, ge=7, le=365),
+) -> dict:
+    """
+    Analyze content performance to identify winning patterns.
+
+    Returns:
+    - content_length: Performance by post length (short, medium, long, very_long)
+    - media_impact: Performance comparison with/without media
+    - hashtag_performance: Engagement by hashtag count
+    """
+    user_id = UUID(current_user.sub)
+
+    # Validate account belongs to user if specified
+    if account_id:
+        account = session.exec(
+            select(SocialAccount).where(
+                SocialAccount.id == account_id,
+                SocialAccount.owner_id == user_id,
+            )
+        ).first()
+        if not account:
+            return {
+                "content_length": [],
+                "media_impact": {},
+                "hashtag_performance": [],
+                "total_posts_analyzed": 0,
+            }
+
+    return await analytics_service.get_content_performance_insights(
+        session=session,
+        account_id=account_id,
+        days_lookback=days_lookback,
+    )
+
+
+@router.get("/platform-comparison")
+async def get_platform_comparison(
+    session: SessionDep,
+    current_user: CurrentUserDep,
+    days_lookback: int = Query(default=30, ge=7, le=365),
+) -> dict:
+    """
+    Compare performance metrics across all connected social platforms.
+
+    Returns:
+    - platforms: List of platform performance summaries with:
+        - post_count, total_impressions, total_reach
+        - engagement metrics (likes, comments, shares, clicks)
+        - average engagement rate
+    """
+    user_id = UUID(current_user.sub)
+
+    return await analytics_service.get_platform_comparison(
+        session=session,
+        owner_id=user_id,
+        days_lookback=days_lookback,
+    )

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 450 80">
+  <defs>
+    <linearGradient id="horizRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- O Mark -->
+  <circle cx="35" cy="40" r="30" fill="none" stroke="#2D2D2D" stroke-width="6"/>
+  <path d="M35 10 L50 40 L35 32 L20 40 Z" fill="url(#horizRed)"/>
+  <circle cx="35" cy="40" r="9" fill="#2D2D2D"/>
+  <circle cx="35" cy="40" r="4.5" fill="#1a1a1a"/>
+
+  <!-- Text: kyaku -->
+  <text x="78" y="50" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="bold" fill="#2D2D2D">kyaku</text>
+
+  <!-- Japanese Text -->
+  <text x="215" y="50" font-family="'Hiragino Sans', 'MS Gothic', sans-serif" font-size="18" fill="#666666">おぐめ 宿</text>
+
+  <!-- Tagline -->
+  <text x="320" y="50" font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#999999" font-style="italic">| Japanese Inn</text>
+</svg>

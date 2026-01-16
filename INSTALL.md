@@ -1,10 +1,11 @@
 # Okyaku CRM - Installation Guide
 
-A comprehensive CRM platform built with FastAPI (Python) and React (TypeScript).
+An AI-native CRM platform built with FastAPI (Python), React (TypeScript), and Ollama (Llama 3.1).
 
 ## Table of Contents
 
 - [Prerequisites](#prerequisites)
+- [Ollama Setup (AI Features)](#ollama-setup-ai-features)
 - [Quick Start](#quick-start)
 - [Manual Installation](#manual-installation)
 - [Configuration](#configuration)
@@ -26,6 +27,7 @@ Before installing Okyaku CRM, ensure you have the following software installed:
 | Python | 3.11+ | https://python.org/downloads |
 | Node.js | 18+ | https://nodejs.org |
 | PostgreSQL | 14+ | https://postgresql.org/download |
+| Ollama | Latest | https://ollama.com/download |
 
 ### Verify Installation
 
@@ -47,6 +49,10 @@ npm --version
 # Check PostgreSQL is running
 pg_isready
 # Expected: accepting connections
+
+# Check Ollama
+ollama --version
+# Expected: ollama version x.x.x
 ```
 
 ### Windows-Specific Notes
@@ -79,6 +85,98 @@ sudo apt install nodejs
 sudo apt install postgresql postgresql-contrib
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
+```
+
+---
+
+## Ollama Setup (AI Features)
+
+Okyaku uses Ollama with Llama 3.1 for all AI features including lead scoring, deal forecasting, recommendations, agents, and natural language chat. This runs 100% locally with zero API costs.
+
+### Install Ollama
+
+**Windows:**
+1. Download from https://ollama.com/download/windows
+2. Run the installer
+3. Ollama will start automatically
+
+**macOS:**
+```bash
+brew install ollama
+```
+
+**Linux:**
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+```
+
+### Download Required Models
+
+```bash
+# Start Ollama service (if not already running)
+ollama serve
+
+# In a new terminal, pull the main language model
+ollama pull llama3.1:8b
+
+# Pull the embeddings model for RAG/semantic search
+ollama pull nomic-embed-text
+```
+
+**Model Options:**
+| Model | Size | RAM Required | Use Case |
+|-------|------|--------------|----------|
+| `llama3.1:8b` | 4.7 GB | 8 GB+ | Default, good balance |
+| `llama3.1:70b` | 40 GB | 64 GB+ | Higher quality, GPU recommended |
+| `llama3.2:3b` | 2 GB | 4 GB+ | Faster, lighter systems |
+
+### Verify Ollama is Running
+
+```bash
+# Test that Ollama is serving
+curl http://localhost:11434/api/tags
+
+# Test the model
+ollama run llama3.1:8b "Hello, how are you?"
+```
+
+### AI Environment Variables
+
+Add these to your `backend/.env` file:
+
+```env
+# Ollama Configuration
+OLLAMA_BASE_URL=http://localhost:11434/v1
+OLLAMA_MODEL=llama3.1:8b
+OLLAMA_EMBEDDING_MODEL=nomic-embed-text
+
+# AI Feature Flags (all enabled by default)
+AI_PREDICTIONS_ENABLED=true
+AI_RECOMMENDATIONS_ENABLED=true
+AI_AGENTS_ENABLED=true
+AI_CHAT_ENABLED=true
+AI_RAG_ENABLED=true
+AI_INSIGHTS_ENABLED=true
+
+# AI Settings
+AI_MAX_TOKENS=4096
+AI_TEMPERATURE=0.7
+AI_REQUIRE_APPROVAL_FOR_WRITES=true
+```
+
+### Running Ollama as a Service
+
+**Windows:** Ollama runs as a system service automatically after installation.
+
+**macOS:**
+```bash
+brew services start ollama
+```
+
+**Linux (systemd):**
+```bash
+sudo systemctl enable ollama
+sudo systemctl start ollama
 ```
 
 ---
@@ -435,6 +533,18 @@ After installation:
    - Social Media Publishing & Analytics
    - Task & Activity Tracking
    - Reporting Dashboard
+4. **Try AI Features** (requires Ollama):
+   - **Lead Scoring**: Get AI-powered lead quality scores
+   - **Deal Forecasting**: Predict deal outcomes and close probabilities
+   - **Churn Risk**: Identify at-risk customers proactively
+   - **Recommendations**: AI-suggested next-best-actions
+   - **AI Agent**: Autonomous task execution with approval workflow
+   - **Conversation Intelligence**: Summarize calls and meetings
+   - **Natural Language Chat**: Query your CRM data in plain English
+   - **Knowledge Base**: Upload docs for AI-powered Q&A (RAG)
+   - **Insights Panel**: Anomaly detection and AI-generated alerts
+
+For detailed AI documentation, see [AI_PROCESS_FLOW.md](./AI_PROCESS_FLOW.md).
 
 ---
 

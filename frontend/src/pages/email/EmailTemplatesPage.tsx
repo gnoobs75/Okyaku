@@ -4,11 +4,16 @@ import { ArrowLeft, Plus, Edit, Trash2, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type { EmailTemplate } from "@/types/email";
 import { TemplateFormModal } from "./TemplateFormModal";
 
 export function EmailTemplatesPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("email-templates");
   const [templates, setTemplates] = useState<EmailTemplate[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingTemplate, setEditingTemplate] = useState<EmailTemplate | null>(null);
@@ -55,6 +60,10 @@ export function EmailTemplatesPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="email-templates" />
+      )}
+
       <div className="flex items-center gap-4">
         <Link to="/email/campaigns">
           <Button variant="ghost" size="icon">

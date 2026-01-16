@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="ogRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FAFAFA"/>
+      <stop offset="100%" style="stop-color:#F0F0F0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+
+  <!-- Decorative circles -->
+  <circle cx="100" cy="530" r="200" fill="none" stroke="#E0E0E0" stroke-width="1" opacity="0.5"/>
+  <circle cx="1100" cy="100" r="150" fill="none" stroke="#E0E0E0" stroke-width="1" opacity="0.5"/>
+
+  <!-- O Mark - Large -->
+  <circle cx="350" cy="280" r="140" fill="none" stroke="#2D2D2D" stroke-width="24"/>
+  <path d="M350 140 L420 280 L350 245 L280 280 Z" fill="url(#ogRed)"/>
+  <circle cx="350" cy="280" r="38" fill="#2D2D2D"/>
+  <circle cx="350" cy="280" r="19" fill="#1a1a1a"/>
+
+  <!-- Text: kyaku -->
+  <text x="540" y="300" font-family="Arial, Helvetica, sans-serif" font-size="120" font-weight="bold" fill="#2D2D2D">kyaku</text>
+
+  <!-- Japanese Text -->
+  <text x="540" y="380" font-family="'Hiragino Sans', 'MS Gothic', sans-serif" font-size="48" fill="#666666">おぐめ 宿</text>
+
+  <!-- Tagline -->
+  <text x="540" y="450" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#999999">Traditional Japanese Inn Experience</text>
+
+  <!-- Bottom bar -->
+  <rect x="0" y="590" width="1200" height="40" fill="url(#ogRed)"/>
+</svg>

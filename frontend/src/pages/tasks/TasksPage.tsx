@@ -5,7 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import { TaskFormModal } from "./TaskFormModal";
 import type { Task, TaskStatus, TaskPriority } from "@/types/activities";
 import type { PaginatedResponse } from "@/types/crm";
@@ -25,6 +28,8 @@ const priorityColors: Record<TaskPriority, string> = {
 };
 
 export function TasksPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("tasks");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -80,6 +85,10 @@ export function TasksPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="tasks" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Tasks</h1>

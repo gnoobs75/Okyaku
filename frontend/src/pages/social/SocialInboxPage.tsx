@@ -31,7 +31,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import { cn } from "@/lib/utils";
 import type {
   SocialMessage,
@@ -69,6 +72,8 @@ const statusColors: Record<MessageStatus, string> = {
 };
 
 export function SocialInboxPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("social-inbox");
   const { get, post } = useApi();
   const [messages, setMessages] = useState<SocialMessage[]>([]);
   const [stats, setStats] = useState<InboxStats | null>(null);
@@ -209,6 +214,10 @@ export function SocialInboxPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="social-inbox" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Social Inbox</h1>

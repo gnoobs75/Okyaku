@@ -45,6 +45,36 @@ class Settings(BaseSettings):
     SOCIAL_POST_RETRY_LIMIT: int = 3
     SOCIAL_POST_RETRY_DELAY: int = 300  # seconds
 
+    # AI Configuration - Ollama (Self-Hosted)
+    # Ollama runs locally and provides OpenAI-compatible API
+    OLLAMA_BASE_URL: str = "http://localhost:11434/v1"
+    OLLAMA_MODEL: str = "llama3.1"  # Main LLM model
+    OLLAMA_EMBEDDING_MODEL: str = "nomic-embed-text"  # For embeddings/RAG
+
+    # AI Settings
+    AI_MAX_TOKENS: int = 4096
+    AI_TEMPERATURE: float = 0.7
+    AI_PROVIDER: str = "ollama"  # "ollama" or "anthropic" for fallback
+
+    # AI Feature Flags
+    AI_AGENTS_ENABLED: bool = True
+    AI_PREDICTIONS_ENABLED: bool = True
+    AI_CHAT_ENABLED: bool = True
+    AI_RAG_ENABLED: bool = False  # Enable after pgvector setup
+    AI_REQUIRE_APPROVAL_FOR_WRITES: bool = True  # Human-in-the-loop
+
+    # Legacy Anthropic (optional fallback)
+    ANTHROPIC_API_KEY: str = ""
+    ANTHROPIC_MODEL: str = "claude-sonnet-4-20250514"
+
+    # Calendar Integration (Google)
+    GOOGLE_CLIENT_ID: str = ""
+    GOOGLE_CLIENT_SECRET: str = ""
+
+    # Calendar Integration (Outlook/Microsoft)
+    OUTLOOK_CLIENT_ID: str = ""
+    OUTLOOK_CLIENT_SECRET: str = ""
+
     # Database Pool
     DB_POOL_SIZE: int = 5
     DB_MAX_OVERFLOW: int = 10

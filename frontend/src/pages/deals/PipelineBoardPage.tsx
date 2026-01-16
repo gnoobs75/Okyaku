@@ -6,12 +6,17 @@ import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExportButton } from "@/components/ExportButton";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import { DealFormModal } from "./DealFormModal";
 import type { Deal, Pipeline, PipelineStage } from "@/types/deals";
 import type { PaginatedResponse } from "@/types/crm";
 
 export function PipelineBoardPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("deals");
   const [pipelines, setPipelines] = useState<Pipeline[]>([]);
   const [selectedPipeline, setSelectedPipeline] = useState<Pipeline | null>(null);
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -113,6 +118,10 @@ export function PipelineBoardPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="deals" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Deals</h1>

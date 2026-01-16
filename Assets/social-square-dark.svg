@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
+  <defs>
+    <linearGradient id="socialRedDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF5555"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Dark Background -->
+  <rect width="400" height="400" fill="#1a1a1a"/>
+
+  <!-- O Mark - Centered and larger -->
+  <circle cx="200" cy="160" r="90" fill="none" stroke="#FFFFFF" stroke-width="18"/>
+  <path d="M200 70 L240 160 L200 140 L160 160 Z" fill="url(#socialRedDark)"/>
+  <circle cx="200" cy="160" r="24" fill="#FFFFFF"/>
+  <circle cx="200" cy="160" r="12" fill="#333333"/>
+
+  <!-- Text: kyaku (white) -->
+  <text x="200" y="300" font-family="Arial, Helvetica, sans-serif" font-size="64" font-weight="bold" fill="#FFFFFF" text-anchor="middle">kyaku</text>
+
+  <!-- Japanese Text -->
+  <text x="200" y="355" font-family="'Hiragino Sans', 'MS Gothic', sans-serif" font-size="32" fill="#AAAAAA" text-anchor="middle">おぐめ 宿</text>
+</svg>

@@ -13,6 +13,11 @@ from app.core.exceptions import (
 )
 from app.core.logging import get_logger, setup_logging
 from app.middleware.logging import RequestLoggingMiddleware
+from app.services.scheduler_service import (
+    init_scheduler,
+    start_scheduler,
+    stop_scheduler,
+)
 
 logger = get_logger(__name__)
 
@@ -27,8 +32,17 @@ async def lifespan(app: FastAPI):
         app=settings.APP_NAME,
         version=settings.APP_VERSION,
     )
+
+    # Initialize and start background scheduler
+    init_scheduler()
+    start_scheduler()
+    logger.info("Background job scheduler started")
+
     yield
+
     # Shutdown
+    stop_scheduler()
+    logger.info("Background job scheduler stopped")
     logger.info("Shutting down application")
 
 

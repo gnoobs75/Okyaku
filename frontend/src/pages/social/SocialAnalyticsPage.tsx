@@ -34,13 +34,21 @@ import {
   BarChart2,
   Inbox,
   Settings,
+  Clock,
+  Layers,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
+import { BestTimeToPost } from "@/components/social/BestTimeToPost";
+import { PlatformComparison } from "@/components/social/PlatformComparison";
 import type {
   AnalyticsOverview,
   PlatformAnalytics,
@@ -66,6 +74,8 @@ const platformColors: Record<SocialPlatform, string> = {
 const ENGAGEMENT_COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7300", "#00C49F"];
 
 export function SocialAnalyticsPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("social-analytics");
   const { get } = useApi();
   const [loading, setLoading] = useState(true);
   const [overview, setOverview] = useState<AnalyticsOverview | null>(null);
@@ -164,6 +174,10 @@ export function SocialAnalyticsPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="social-analytics" />
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -194,39 +208,66 @@ export function SocialAnalyticsPage() {
         </div>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap gap-4">
-        <Select
-          value={dateRange}
-          onChange={(e) => setDateRange(e.target.value)}
-          className="w-40"
-        >
-          <option value="7">Last 7 days</option>
-          <option value="30">Last 30 days</option>
-          <option value="90">Last 90 days</option>
-          <option value="180">Last 6 months</option>
-          <option value="365">Last year</option>
-        </Select>
-        <Select
-          value={granularity}
-          onChange={(e) => setGranularity(e.target.value)}
-          className="w-32"
-        >
-          <option value="day">Daily</option>
-          <option value="week">Weekly</option>
-          <option value="month">Monthly</option>
-        </Select>
-        <div className="flex-1" />
-        <Button variant="outline" onClick={fetchAnalytics} disabled={loading}>
-          <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-          Refresh
-        </Button>
-        <Button variant="outline" onClick={handleExport}>
-          <Download className="mr-2 h-4 w-4" />
-          Export
-        </Button>
-      </div>
+      {/* Tabs */}
+      <Tabs defaultValue="overview" className="space-y-6">
+        <div className="flex flex-wrap items-center gap-4">
+          <TabsList>
+            <TabsTrigger value="overview" className="flex items-center gap-2">
+              <BarChart2 className="h-4 w-4" />
+              Overview
+            </TabsTrigger>
+            <TabsTrigger value="best-times" className="flex items-center gap-2">
+              <Clock className="h-4 w-4" />
+              Best Times
+            </TabsTrigger>
+            <TabsTrigger value="platforms" className="flex items-center gap-2">
+              <Layers className="h-4 w-4" />
+              Platforms
+            </TabsTrigger>
+          </TabsList>
+          <div className="flex-1" />
+          <Select
+            value={dateRange}
+            onChange={(e) => setDateRange(e.target.value)}
+            className="w-40"
+          >
+            <option value="7">Last 7 days</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="180">Last 6 months</option>
+            <option value="365">Last year</option>
+          </Select>
+          <Select
+            value={granularity}
+            onChange={(e) => setGranularity(e.target.value)}
+            className="w-32"
+          >
+            <option value="day">Daily</option>
+            <option value="week">Weekly</option>
+            <option value="month">Monthly</option>
+          </Select>
+          <Button variant="outline" onClick={fetchAnalytics} disabled={loading}>
+            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
+            Refresh
+          </Button>
+          <Button variant="outline" onClick={handleExport}>
+            <Download className="mr-2 h-4 w-4" />
+            Export
+          </Button>
+        </div>
 
+        {/* Best Times Tab */}
+        <TabsContent value="best-times">
+          <BestTimeToPost />
+        </TabsContent>
+
+        {/* Platforms Tab */}
+        <TabsContent value="platforms">
+          <PlatformComparison />
+        </TabsContent>
+
+        {/* Overview Tab */}
+        <TabsContent value="overview">
       {loading ? (
         <div className="flex items-center justify-center p-12">
           <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -584,6 +625,8 @@ export function SocialAnalyticsPage() {
           </div>
         </>
       )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

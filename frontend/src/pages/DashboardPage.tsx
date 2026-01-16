@@ -29,7 +29,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useDrillDown } from "@/hooks/useDrillDown";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type {
   DashboardMetrics,
   PipelineFunnel,
@@ -75,6 +79,9 @@ const formatDate = (dateString: string) => {
 };
 
 export function DashboardPage() {
+  const { push } = useDrillDown();
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("dashboard");
   const [dateFrom, setDateFrom] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() - 30);
@@ -126,6 +133,10 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="dashboard" />
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -168,7 +179,10 @@ export function DashboardPage() {
 
       {/* KPI Cards */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'contacts-list', title: 'All Contacts' })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Contacts</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
@@ -181,7 +195,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'companies-list', title: 'All Companies' })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Companies</CardTitle>
             <Building2 className="h-4 w-4 text-muted-foreground" />
@@ -194,7 +211,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'deals-list', title: 'Pipeline Deals', filters: { status: 'open' } })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Pipeline Value</CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
@@ -209,7 +229,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'contacts-by-status', title: 'Customers', status: 'customer' })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
@@ -225,7 +248,10 @@ export function DashboardPage() {
 
       {/* Secondary KPIs */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'activities-list', title: 'Activities', filters: { date_from: dateFrom, date_to: dateTo } })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Activities</CardTitle>
             <Activity className="h-4 w-4 text-muted-foreground" />
@@ -238,7 +264,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'tasks-list', title: 'Open Tasks', filters: { status: 'pending' } })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Open Tasks</CardTitle>
             <CheckSquare className="h-4 w-4 text-muted-foreground" />
@@ -249,7 +278,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'tasks-list', title: 'Overdue Tasks', filters: { overdue: true } })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Overdue Tasks</CardTitle>
             <AlertTriangle className="h-4 w-4 text-red-500" />
@@ -262,7 +294,10 @@ export function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card
+          className="cursor-pointer hover:border-primary/50"
+          onClick={() => push({ type: 'deals-list', title: 'Closed Deals', filters: { status: 'closed' } })}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Closed Deals</CardTitle>
             <DollarSign className="h-4 w-4 text-green-500" />
@@ -305,6 +340,17 @@ export function DashboardPage() {
                       dataKey="value"
                       data={funnelData}
                       isAnimationActive
+                      onClick={(data, index) => {
+                        if (funnel?.stages[index]) {
+                          push({
+                            type: 'pipeline-stage',
+                            title: funnel.stages[index].stage_name,
+                            stageId: funnel.stages[index].stage_id,
+                            stageName: funnel.stages[index].stage_name,
+                            pipelineId: funnel.pipeline?.id || '',
+                          });
+                        }
+                      }}
                     >
                       <LabelList
                         position="right"
@@ -313,7 +359,7 @@ export function DashboardPage() {
                         dataKey="name"
                       />
                       {funnelData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                        <Cell key={`cell-${index}`} fill={entry.fill} className="cursor-pointer" />
                       ))}
                     </Funnel>
                   </FunnelChart>
@@ -348,7 +394,21 @@ export function DashboardPage() {
             {forecastData.length > 0 ? (
               <div className="h-[300px] min-h-[300px]">
                 <ResponsiveContainer width="100%" height="100%" minWidth={200} minHeight={200}>
-                  <BarChart data={forecastData}>
+                  <BarChart
+                    data={forecastData}
+                    onClick={(data) => {
+                      if (data?.activePayload?.[0]?.payload) {
+                        const payload = data.activePayload[0].payload;
+                        push({
+                          type: 'forecast-month',
+                          title: `${payload.month_label} Forecast`,
+                          month: payload.month,
+                          monthLabel: payload.month_label,
+                        });
+                      }
+                    }}
+                    className="cursor-pointer"
+                  >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="month_label" />
                     <YAxis tickFormatter={(value) => formatCurrency(value)} />
@@ -393,7 +453,18 @@ export function DashboardPage() {
             {leaderboard?.leaderboard && leaderboard.leaderboard.length > 0 ? (
               <div className="space-y-4">
                 {leaderboard.leaderboard.slice(0, 5).map((entry, index) => (
-                  <div key={entry.user_id} className="flex items-center gap-3">
+                  <div
+                    key={entry.user_id}
+                    className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors"
+                    onClick={() => push({
+                      type: 'user-activities',
+                      title: `${entry.user_name}'s Activities`,
+                      userId: entry.user_id,
+                      userName: entry.user_name,
+                      dateFrom,
+                      dateTo,
+                    })}
+                  >
                     <div
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${
                         index === 0
@@ -443,7 +514,12 @@ export function DashboardPage() {
                 {recentActivities.activities.slice(0, 5).map((activity) => (
                   <div
                     key={activity.id}
-                    className="flex items-start gap-3 text-sm"
+                    className="flex items-start gap-3 text-sm cursor-pointer hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors"
+                    onClick={() => push({
+                      type: 'activity-detail',
+                      title: activity.subject,
+                      activityId: activity.id,
+                    })}
                   >
                     <Badge variant="outline" className="capitalize">
                       {activity.type}
@@ -486,7 +562,12 @@ export function DashboardPage() {
                 {upcomingTasks.tasks.slice(0, 5).map((task) => (
                   <div
                     key={task.id}
-                    className="flex items-start gap-3 text-sm"
+                    className="flex items-start gap-3 text-sm cursor-pointer hover:bg-muted/50 rounded-lg p-2 -m-2 transition-colors"
+                    onClick={() => push({
+                      type: 'task-detail',
+                      title: task.title,
+                      taskId: task.id,
+                    })}
                   >
                     <Badge
                       variant={
@@ -530,7 +611,12 @@ export function DashboardPage() {
               Object.entries(metrics.contacts_by_status).map(([status, count]) => (
                 <div
                   key={status}
-                  className="flex items-center gap-2 bg-muted rounded-lg px-4 py-2"
+                  className="flex items-center gap-2 bg-muted rounded-lg px-4 py-2 cursor-pointer hover:bg-muted/70 transition-colors"
+                  onClick={() => push({
+                    type: 'contacts-by-status',
+                    title: `${status.charAt(0).toUpperCase() + status.slice(1)} Contacts`,
+                    status,
+                  })}
                 >
                   <Badge
                     className={

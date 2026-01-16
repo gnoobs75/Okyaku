@@ -53,7 +53,7 @@ export function LoginPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-primary/20" />
         <div className="relative z-10 flex flex-col justify-center p-12 text-white">
           <div className="mb-8">
-            <h1 className="text-5xl font-bold tracking-tight mb-2">Okyaku</h1>
+            <img src="/logo-dark-bg.svg" alt="Okyaku" className="h-24 w-auto mb-4" />
             <p className="text-xl text-white/80">Customer Relationship Management</p>
           </div>
           <div className="space-y-6 max-w-md">
@@ -107,7 +107,7 @@ export function LoginPage() {
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
-            <h1 className="text-4xl font-bold text-primary">Okyaku</h1>
+            <img src="/logo-full-color.svg" alt="Okyaku" className="h-20 w-auto mx-auto mb-2" />
             <p className="text-muted-foreground">Customer Relationship Management</p>
           </div>
 

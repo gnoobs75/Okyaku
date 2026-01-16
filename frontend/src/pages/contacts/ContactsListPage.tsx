@@ -13,7 +13,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportButton } from "@/components/ExportButton";
+import { TutorialPanel } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
+import { useTutorial } from "@/context/TutorialContext";
+import { getTutorialForStage } from "@/content/tutorials";
 import type { Contact, PaginatedResponse } from "@/types/crm";
 
 const statusColors: Record<string, string> = {
@@ -25,6 +28,8 @@ const statusColors: Record<string, string> = {
 };
 
 export function ContactsListPage() {
+  const { tutorialMode } = useTutorial();
+  const tutorial = getTutorialForStage("contacts");
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -58,6 +63,10 @@ export function ContactsListPage() {
 
   return (
     <div className="space-y-6">
+      {tutorialMode && tutorial && (
+        <TutorialPanel tutorial={tutorial} stageId="contacts" />
+      )}
+
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Contacts</h1>

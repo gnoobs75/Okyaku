@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 120">
+  <defs>
+    <linearGradient id="redGradientDark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF5555"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- O Mark - Outer Ring (lighter for dark bg) -->
+  <circle cx="55" cy="55" r="45" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+
+  <!-- O Mark - Red Arrow/Compass Point -->
+  <path d="M55 10 L75 55 L55 45 L35 55 Z" fill="url(#redGradientDark)"/>
+
+  <!-- O Mark - Inner Circle (Eye) -->
+  <circle cx="55" cy="55" r="12" fill="#FFFFFF"/>
+  <circle cx="55" cy="55" r="6" fill="#333333"/>
+
+  <!-- Text: kyaku (white for dark bg) -->
+  <text x="115" y="70" font-family="Arial, Helvetica, sans-serif" font-size="52" font-weight="bold" fill="#FFFFFF">kyaku</text>
+
+  <!-- Japanese Text: おぐめ 宿 -->
+  <text x="115" y="105" font-family="'Hiragino Sans', 'MS Gothic', sans-serif" font-size="24" fill="#CCCCCC">おぐめ 宿</text>
+</svg>

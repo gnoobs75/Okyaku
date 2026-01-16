@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 50">
+  <defs>
+    <linearGradient id="compactRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- O Mark - Compact -->
+  <circle cx="22" cy="25" r="18" fill="none" stroke="#2D2D2D" stroke-width="4"/>
+  <path d="M22 7 L31 25 L22 21 L13 25 Z" fill="url(#compactRed)"/>
+  <circle cx="22" cy="25" r="5" fill="#2D2D2D"/>
+  <circle cx="22" cy="25" r="2.5" fill="#1a1a1a"/>
+
+  <!-- Text: kyaku only -->
+  <text x="48" y="33" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="bold" fill="#2D2D2D">kyaku</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- O Mark - Outer Ring -->
+  <circle cx="60" cy="60" r="50" fill="none" stroke="#2D2D2D" stroke-width="10"/>
+
+  <!-- O Mark - Red Arrow/Compass Point -->
+  <path d="M60 10 L85 60 L60 48 L35 60 Z" fill="url(#redGrad)"/>
+
+  <!-- O Mark - Inner Circle (Eye) -->
+  <circle cx="60" cy="60" r="14" fill="#2D2D2D"/>
+  <circle cx="60" cy="60" r="7" fill="#1a1a1a"/>
+</svg>

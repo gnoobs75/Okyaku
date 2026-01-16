@@ -1,6 +1,6 @@
 # Okyaku CRM - Quick Start Guide
 
-Get up and running in 5 minutes.
+Get up and running in 5 minutes with a fully AI-native CRM.
 
 ## Prerequisites
 
@@ -9,6 +9,7 @@ Get up and running in 5 minutes.
 | Python | 3.11+ | https://python.org/downloads |
 | Node.js | 18+ | https://nodejs.org |
 | PostgreSQL | 14+ | https://postgresql.org/download |
+| Ollama | Latest | https://ollama.com/download |
 
 ## Setup Steps
 
@@ -28,7 +29,21 @@ Double-click: check-postgres.bat
 
 This checks PostgreSQL is installed, running, and creates the database.
 
-### 3. Run Setup
+### 3. Install Ollama (AI Features)
+
+Download and install from https://ollama.com/download
+
+Then pull the required models:
+```bash
+# Start Ollama (if not auto-started)
+ollama serve
+
+# Pull models (in a new terminal)
+ollama pull llama3.1:8b
+ollama pull nomic-embed-text
+```
+
+### 4. Run Setup
 
 ```
 Double-click: setup.bat
@@ -36,7 +51,7 @@ Double-click: setup.bat
 
 This installs all dependencies and configures the database.
 
-### 4. Start Development
+### 5. Start Development
 
 ```
 Double-click: start-dev.bat
@@ -66,6 +81,7 @@ This launches both backend and frontend servers.
 | Backend API | http://localhost:8000 |
 | API Documentation | http://localhost:8000/api/v1/docs |
 | Health Check | http://localhost:8000/api/v1/health |
+| Ollama Server | http://localhost:11434 |
 
 ---
 
@@ -203,3 +219,26 @@ Okyaku/
   - Email Campaigns
   - Social Media Publishing
   - Analytics Dashboard
+
+## AI Features Quick Reference
+
+All AI features require Ollama running with `llama3.1:8b` model.
+
+| Feature | How to Access |
+|---------|---------------|
+| **Lead Scoring** | Contact detail page → AI Score panel |
+| **Deal Forecast** | Deal detail page → Forecast widget |
+| **Recommendations** | Dashboard → Next Best Actions panel |
+| **AI Chat** | Bottom-right chat icon → Ask questions naturally |
+| **Conversation Analysis** | Activity detail → "Summarize" button |
+| **AI Insights** | Dashboard → Insights panel |
+| **Knowledge Base** | Settings → Upload documents for RAG |
+
+### Quick AI Test
+
+After setup, try these in the AI Chat:
+- "Show me my hottest leads"
+- "What deals are closing this month?"
+- "Summarize activities with [company name]"
+
+For detailed AI documentation, see [AI_PROCESS_FLOW.md](./AI_PROCESS_FLOW.md).

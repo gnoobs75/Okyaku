@@ -16,8 +16,19 @@ import {
   BarChart3,
   MessageSquare,
   Calendar,
+  Sparkles,
+  FolderOpen,
+  Ear,
+  Hash,
+  Target,
+  FlaskConical,
+  Zap,
+  FileBarChart,
+  History,
+  CalendarDays,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { TutorialToggle } from "@/components/tutorial";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
@@ -36,10 +47,18 @@ const navItems = [
 
 const marketingItems = [
   { path: "/email/campaigns", label: "Email Campaigns", icon: Mail },
-  { path: "/social", label: "Social Accounts", icon: Share2 },
-  { path: "/social/calendar", label: "Social Calendar", icon: Calendar },
+  { path: "/social", label: "Social Calendar", icon: Calendar },
+  { path: "/social/accounts", label: "Social Accounts", icon: Share2 },
   { path: "/social/inbox", label: "Social Inbox", icon: MessageSquare },
   { path: "/social/analytics", label: "Analytics", icon: BarChart3 },
+  { path: "/social/ai", label: "AI Content", icon: Sparkles },
+  { path: "/social/library", label: "Content Library", icon: FolderOpen },
+  { path: "/social/listening", label: "Social Listening", icon: Ear },
+  { path: "/social/hashtags", label: "Hashtag Research", icon: Hash },
+  { path: "/social/competitors", label: "Competitors", icon: Target },
+  { path: "/social/ab-testing", label: "A/B Testing", icon: FlaskConical },
+  { path: "/social/automation", label: "Automation", icon: Zap },
+  { path: "/social/reports", label: "Reports", icon: FileBarChart },
 ];
 
 export function Layout({ children }: LayoutProps) {
@@ -78,15 +97,18 @@ export function Layout({ children }: LayoutProps) {
       <header className="lg:hidden sticky top-0 z-50 w-full bg-card border-b shadow-sm">
         <div className="flex h-14 items-center justify-between px-4">
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-bold text-xl text-primary">Okyaku</span>
+            <img src="/header-logo-compact.svg" alt="Okyaku" className="h-10 w-auto" />
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          >
-            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          <div className="flex items-center gap-2">
+            <TutorialToggle />
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            >
+              {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -100,8 +122,8 @@ export function Layout({ children }: LayoutProps) {
         >
           <div className="flex flex-col h-full">
             {/* Logo */}
-            <div className="hidden lg:flex items-center gap-2 h-16 px-6 border-b bg-secondary">
-              <span className="font-bold text-2xl text-white tracking-tight">Okyaku</span>
+            <div className="hidden lg:flex items-center justify-center h-16 px-4 border-b bg-card">
+              <img src="/header-logo-wide.svg" alt="Okyaku" className="h-10 w-auto" />
             </div>
 
             {/* Navigation */}
@@ -131,6 +153,8 @@ export function Layout({ children }: LayoutProps) {
                 <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                   System
                 </p>
+                <NavLink item={{ path: "/calendar", label: "Calendar", icon: CalendarDays }} />
+                <NavLink item={{ path: "/audit-log", label: "Audit Log", icon: History }} />
                 <NavLink item={{ path: "/settings", label: "Settings", icon: Settings }} />
               </div>
             </nav>
@@ -179,6 +203,7 @@ export function Layout({ children }: LayoutProps) {
               </h1>
             </div>
             <div className="flex items-center gap-4">
+              <TutorialToggle />
               <span className="text-sm text-muted-foreground">
                 Welcome, <span className="font-medium text-foreground">{user?.username}</span>
               </span>

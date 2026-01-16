@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180">
+  <defs>
+    <linearGradient id="appleRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#E63232"/>
+    </linearGradient>
+  </defs>
+
+  <!-- White Background with rounded corners simulated -->
+  <rect width="180" height="180" rx="40" fill="#FFFFFF"/>
+
+  <!-- O Mark - Centered -->
+  <circle cx="90" cy="90" r="60" fill="none" stroke="#2D2D2D" stroke-width="12"/>
+  <path d="M90 30 L120 90 L90 75 L60 90 Z" fill="url(#appleRed)"/>
+  <circle cx="90" cy="90" r="16" fill="#2D2D2D"/>
+  <circle cx="90" cy="90" r="8" fill="#1a1a1a"/>
+</svg>

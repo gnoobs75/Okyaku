@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Okyaku Logo Assets Preview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #2D2D2D;
+        }
+        h2 {
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #E63232;
+            color: #2D2D2D;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card.dark {
+            background: #1a1a1a;
+        }
+        .card h3 {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .card.dark h3 {
+            color: #aaa;
+        }
+        .card img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .card .filename {
+            font-size: 11px;
+            color: #999;
+            margin-top: 10px;
+            font-family: monospace;
+            background: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        .card.dark .filename {
+            background: #333;
+            color: #888;
+        }
+        .favicon-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .favicon-item {
+            text-align: center;
+        }
+        .favicon-item img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .favicon-item span {
+            display: block;
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .usage-notes {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        .usage-notes h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        .usage-notes ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+        .usage-notes li {
+            margin: 5px 0;
+        }
+        .usage-notes code {
+            background: rgba(0,0,0,0.1);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Okyaku おぐめ 宿 - Logo Assets</h1>
+
+    <h2>Full Logos - Light Background</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Full Color Logo</h3>
+            <img src="logo-full-color.svg" alt="Full Color Logo">
+            <div class="filename">logo-full-color.svg</div>
+        </div>
+        <div class="card">
+            <h3>Monochrome Black</h3>
+            <img src="logo-mono-black.svg" alt="Mono Black Logo">
+            <div class="filename">logo-mono-black.svg</div>
+        </div>
+    </div>
+
+    <h2>Full Logos - Dark Background</h2>
+    <div class="grid">
+        <div class="card dark">
+            <h3>Dark Background Version</h3>
+            <img src="logo-dark-bg.svg" alt="Dark BG Logo">
+            <div class="filename">logo-dark-bg.svg</div>
+        </div>
+        <div class="card dark">
+            <h3>Monochrome White</h3>
+            <img src="logo-mono-white.svg" alt="Mono White Logo">
+            <div class="filename">logo-mono-white.svg</div>
+        </div>
+    </div>
+
+    <h2>Header Logos</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Wide Header</h3>
+            <img src="header-logo-wide.svg" alt="Wide Header Logo">
+            <div class="filename">header-logo-wide.svg</div>
+        </div>
+        <div class="card">
+            <h3>Compact Header</h3>
+            <img src="header-logo-compact.svg" alt="Compact Header Logo">
+            <div class="filename">header-logo-compact.svg</div>
+        </div>
+        <div class="card">
+            <h3>With Tagline</h3>
+            <img src="logo-horizontal-tagline.svg" alt="Logo with Tagline">
+            <div class="filename">logo-horizontal-tagline.svg</div>
+        </div>
+    </div>
+
+    <h2>Logo Mark Only</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Mark Only (Icon)</h3>
+            <img src="logo-mark-only.svg" alt="Logo Mark" style="max-width: 150px;">
+            <div class="filename">logo-mark-only.svg</div>
+        </div>
+    </div>
+
+    <h2>Social Media</h2>
+    <div class="grid">
+        <div class="card">
+            <h3>Square - Light</h3>
+            <img src="social-square.svg" alt="Social Square Light" style="max-width: 200px;">
+            <div class="filename">social-square.svg</div>
+        </div>
+        <div class="card dark">
+            <h3>Square - Dark</h3>
+            <img src="social-square-dark.svg" alt="Social Square Dark" style="max-width: 200px;">
+            <div class="filename">social-square-dark.svg</div>
+        </div>
+        <div class="card">
+            <h3>OG Image (1200x630)</h3>
+            <img src="og-image.svg" alt="OG Image">
+            <div class="filename">og-image.svg</div>
+        </div>
+    </div>
+
+    <h2>Favicons & Touch Icons</h2>
+    <div class="card">
+        <h3>Favicon Sizes</h3>
+        <div class="favicon-row">
+            <div class="favicon-item">
+                <img src="favicon-16.svg" width="16" height="16" alt="16x16">
+                <span>16x16</span>
+            </div>
+            <div class="favicon-item">
+                <img src="favicon-32.svg" width="32" height="32" alt="32x32">
+                <span>32x32</span>
+            </div>
+            <div class="favicon-item">
+                <img src="favicon.svg" width="64" height="64" alt="Scalable">
+                <span>Scalable</span>
+            </div>
+            <div class="favicon-item">
+                <img src="apple-touch-icon.svg" width="120" height="120" alt="Apple Touch">
+                <span>Apple Touch (180x180)</span>
+            </div>
+        </div>
+        <div class="filename">favicon-16.svg, favicon-32.svg, favicon.svg, apple-touch-icon.svg</div>
+    </div>
+
+    <div class="usage-notes">
+        <h3>Usage Notes</h3>
+        <ul>
+            <li><strong>SVG files</strong> can be used directly on websites or converted to PNG/JPG at any size</li>
+            <li>For favicon: Convert <code>favicon.svg</code> to <code>.ico</code> or use SVG directly with modern browsers</li>
+            <li>For social sharing: Export <code>og-image.svg</code> to PNG at 1200x630px</li>
+            <li>For app icons: Export <code>apple-touch-icon.svg</code> to PNG at 180x180px</li>
+            <li>Colors: Primary Red <code>#E63232</code>, Dark <code>#2D2D2D</code></li>
+        </ul>
+    </div>
+</body>
+</html>
