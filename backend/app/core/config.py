@@ -63,6 +63,11 @@ class Settings(BaseSettings):
     AI_RAG_ENABLED: bool = False  # Enable after pgvector setup
     AI_REQUIRE_APPROVAL_FOR_WRITES: bool = True  # Human-in-the-loop
 
+    # Performance Settings
+    WARMUP_MODELS_ON_STARTUP: bool = False  # Set to True to preload models into VRAM
+    PERFORMANCE_LOG_SLOW_REQUESTS_MS: int = 1000  # Log requests slower than this
+    PERFORMANCE_LOG_SLOW_AI_MS: int = 5000  # Log AI requests slower than this
+
     # Legacy Anthropic (optional fallback)
     ANTHROPIC_API_KEY: str = ""
     ANTHROPIC_MODEL: str = "claude-sonnet-4-20250514"
@@ -80,7 +85,7 @@ class Settings(BaseSettings):
     DB_MAX_OVERFLOW: int = 10
 
     # CORS
-    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173"]
+    CORS_ORIGINS: list[str] = ["http://localhost:3000", "http://localhost:5173", "http://localhost:5174"]
 
     # Logging
     LOG_LEVEL: str = "INFO"

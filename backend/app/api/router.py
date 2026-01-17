@@ -26,6 +26,7 @@ from app.api.endpoints import (
     imports,
     insights,
     knowledge_base,
+    metrics,
     pipelines,
     recommendations,
     reporting,
@@ -40,6 +41,9 @@ api_router = APIRouter()
 
 # Health check endpoints (no auth required)
 api_router.include_router(health.router, tags=["health"])
+
+# Performance metrics (no auth required for monitoring)
+api_router.include_router(metrics.router, tags=["metrics"])
 
 # Auth endpoints (no auth required)
 api_router.include_router(auth.router, prefix="/auth", tags=["auth"])

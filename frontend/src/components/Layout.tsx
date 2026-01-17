@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TutorialToggle } from "@/components/tutorial";
+import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { useAuth } from "@/context/AuthContext";
 import { cn } from "@/lib/utils";
 
@@ -214,6 +215,9 @@ export function Layout({ children }: LayoutProps) {
           <div className="p-4 lg:p-8">{children}</div>
         </main>
       </div>
+
+      {/* Performance Monitor */}
+      <PerformanceMonitor refreshInterval={30000} />
     </div>
   );
 }
