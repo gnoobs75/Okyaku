@@ -107,8 +107,8 @@ export function DropdownMenuContent({
     <div
       ref={contentRef}
       className={cn(
-        "absolute z-50 mt-2 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
-        "animate-in fade-in-0 zoom-in-95",
+        "absolute z-50 mt-1.5 min-w-[10rem] overflow-hidden rounded-lg border border-border/50 bg-popover p-1.5 text-popover-foreground shadow-lg shadow-black/5",
+        "animate-in fade-in-0 zoom-in-95 duration-150",
         alignmentClasses[align],
         className
       )}
@@ -143,9 +143,9 @@ export function DropdownMenuItem({
     <button
       type="button"
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors",
-        "hover:bg-accent hover:text-accent-foreground",
-        "focus:bg-accent focus:text-accent-foreground",
+        "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-md px-2.5 py-2 text-sm outline-none transition-colors duration-150",
+        "hover:bg-muted/80 hover:text-foreground",
+        "focus:bg-muted/80 focus:text-foreground",
         disabled && "pointer-events-none opacity-50",
         className
       )}
@@ -162,7 +162,7 @@ interface DropdownMenuSeparatorProps {
 }
 
 export function DropdownMenuSeparator({ className }: DropdownMenuSeparatorProps) {
-  return <div className={cn("-mx-1 my-1 h-px bg-muted", className)} />;
+  return <div className={cn("-mx-1.5 my-1.5 h-px bg-border/50", className)} />;
 }
 
 interface DropdownMenuLabelProps {
@@ -172,7 +172,7 @@ interface DropdownMenuLabelProps {
 
 export function DropdownMenuLabel({ children, className }: DropdownMenuLabelProps) {
   return (
-    <div className={cn("px-2 py-1.5 text-sm font-semibold", className)}>
+    <div className={cn("px-2.5 py-1.5 text-xs font-medium text-muted-foreground", className)}>
       {children}
     </div>
   );

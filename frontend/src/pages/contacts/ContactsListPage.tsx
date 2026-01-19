@@ -13,7 +13,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ExportButton } from "@/components/ExportButton";
-import { TutorialPanel } from "@/components/tutorial";
+import { TutorialPanel, TutorialButton } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
 import { useTutorial } from "@/context/TutorialContext";
 import { getTutorialForStage } from "@/content/tutorials";
@@ -75,6 +75,7 @@ export function ContactsListPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          {tutorial && <TutorialButton tutorial={tutorial} />}
           <ExportButton entityType="contacts" />
           <Link to="/contacts/new">
             <Button>

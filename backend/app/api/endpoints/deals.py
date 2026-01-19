@@ -24,7 +24,7 @@ from app.schemas.common import PaginatedResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[DealReadWithRelations])
+@router.get("", response_model=PaginatedResponse[DealReadWithRelations])
 async def list_deals(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -211,7 +211,7 @@ async def get_deal(
     return deal_data
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=DealRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=DealRead)
 async def create_deal(
     data: DealCreate,
     session: SessionDep,

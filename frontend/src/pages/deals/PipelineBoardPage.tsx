@@ -6,7 +6,7 @@ import { Select } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ExportButton } from "@/components/ExportButton";
-import { TutorialPanel } from "@/components/tutorial";
+import { TutorialPanel, TutorialButton } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
 import { useTutorial } from "@/context/TutorialContext";
 import { getTutorialForStage } from "@/content/tutorials";
@@ -128,6 +128,7 @@ export function PipelineBoardPage() {
           <p className="text-muted-foreground">Manage your sales pipeline</p>
         </div>
         <div className="flex gap-2">
+          {tutorial && <TutorialButton tutorial={tutorial} />}
           <ExportButton
             entityType="deals"
             pipelineId={selectedPipeline?.id}

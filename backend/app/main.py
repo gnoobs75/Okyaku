@@ -173,12 +173,13 @@ app = FastAPI(
     docs_url=f"{settings.API_V1_PREFIX}/docs",
     redoc_url=f"{settings.API_V1_PREFIX}/redoc",
     lifespan=lifespan,
+    redirect_slashes=False,  # Prevent 307 redirects that break auth through proxy
 )
 
-# CORS middleware
+# CORS middleware - allow all origins in development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

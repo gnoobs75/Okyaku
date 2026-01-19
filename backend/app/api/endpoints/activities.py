@@ -23,7 +23,7 @@ from app.schemas.common import PaginatedResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[ActivityReadWithRelations])
+@router.get("", response_model=PaginatedResponse[ActivityReadWithRelations])
 async def list_activities(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -182,7 +182,7 @@ async def get_activity(
     return activity_data
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ActivityRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=ActivityRead)
 async def create_activity(
     data: ActivityCreate,
     session: SessionDep,

@@ -32,6 +32,7 @@ import { EngagementAutomationPage } from "@/pages/social/EngagementAutomationPag
 import { ReportingPage } from "@/pages/social/ReportingPage";
 import { CalendarSettingsPage } from "@/pages/calendar/CalendarSettingsPage";
 import { AuditLogPage } from "@/pages/settings/AuditLogPage";
+import { DocumentationPage } from "@/pages/DocumentationPage";
 
 function App() {
   return (
@@ -337,6 +338,17 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <AuditLogPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          {/* Documentation */}
+          <Route
+            path="/documentation"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <DocumentationPage />
                 </Layout>
               </ProtectedRoute>
             }

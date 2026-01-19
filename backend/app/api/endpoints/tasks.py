@@ -24,7 +24,7 @@ from app.schemas.common import PaginatedResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[TaskReadWithRelations])
+@router.get("", response_model=PaginatedResponse[TaskReadWithRelations])
 async def list_tasks(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -215,7 +215,7 @@ async def get_task(
     return task_data
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=TaskRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=TaskRead)
 async def create_task(
     data: TaskCreate,
     session: SessionDep,

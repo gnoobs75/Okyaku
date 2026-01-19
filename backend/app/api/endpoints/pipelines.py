@@ -20,7 +20,7 @@ from app.models.pipeline import (
 router = APIRouter()
 
 
-@router.get("/", response_model=list[PipelineReadWithStages])
+@router.get("", response_model=list[PipelineReadWithStages])
 async def list_pipelines(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -77,7 +77,7 @@ async def get_pipeline(
     return pipeline_data
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=PipelineRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=PipelineRead)
 async def create_pipeline(
     data: PipelineCreate,
     session: SessionDep,

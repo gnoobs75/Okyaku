@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Calendar, BarChart2, Inbox, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TutorialPanel } from "@/components/tutorial";
+import { TutorialPanel, TutorialButton } from "@/components/tutorial";
 import { useTutorial } from "@/context/TutorialContext";
 import { getTutorialForStage } from "@/content/tutorials";
 import { AIContentAssistant } from "@/components/social/AIContentAssistant";
@@ -25,6 +25,7 @@ export function AIContentPage() {
           </p>
         </div>
         <div className="flex gap-2">
+          {tutorial && <TutorialButton tutorial={tutorial} variant="prominent" />}
           <Link to="/social">
             <Button variant="outline">
               <Calendar className="mr-2 h-4 w-4" />

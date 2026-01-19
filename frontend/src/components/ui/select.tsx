@@ -63,12 +63,13 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
       type="button"
       onClick={() => setOpen(!open)}
       className={cn(
-        "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+        "flex h-9 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm transition-colors hover:bg-muted/50 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1 disabled:cursor-not-allowed disabled:opacity-50",
+        open && "ring-2 ring-ring ring-offset-1",
         className
       )}
     >
       {children}
-      <ChevronDown className="h-4 w-4 opacity-50" />
+      <ChevronDown className={cn("h-4 w-4 text-muted-foreground transition-transform duration-150", open && "rotate-180")} />
     </button>
   );
 }
@@ -110,7 +111,7 @@ export function SelectContent({ children, className }: SelectContentProps) {
     <div
       ref={ref}
       className={cn(
-        "absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md",
+        "absolute z-50 mt-1.5 max-h-60 w-full overflow-auto rounded-lg border border-border/50 bg-popover p-1.5 text-popover-foreground shadow-lg shadow-black/5 animate-in fade-in-0 zoom-in-95 duration-150",
         className
       )}
     >
@@ -133,14 +134,14 @@ export function SelectItem({ value, children, className }: SelectItemProps) {
     <div
       onClick={() => onValueChange(value)}
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-        isSelected && "bg-accent",
+        "relative flex w-full cursor-pointer select-none items-center rounded-md py-2 pl-8 pr-2.5 text-sm outline-none transition-colors duration-150 hover:bg-muted/80 focus:bg-muted/80",
+        isSelected && "bg-muted/50 font-medium",
         className
       )}
     >
       {isSelected && (
-        <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-          <Check className="h-4 w-4" />
+        <span className="absolute left-2.5 flex h-3.5 w-3.5 items-center justify-center text-primary">
+          <Check className="h-3.5 w-3.5" />
         </span>
       )}
       {children}

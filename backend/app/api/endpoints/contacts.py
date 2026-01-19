@@ -20,7 +20,7 @@ from app.schemas.common import PaginatedResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[ContactReadWithCompany])
+@router.get("", response_model=PaginatedResponse[ContactReadWithCompany])
 async def list_contacts(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -141,7 +141,7 @@ async def get_contact(
     return contact_data
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=ContactRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=ContactRead)
 async def create_contact(
     data: ContactCreate,
     session: SessionDep,

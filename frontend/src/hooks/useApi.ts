@@ -14,6 +14,9 @@ interface ApiResponse<T> {
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api/v1";
+console.log('[useApi] API_BASE_URL:', API_BASE_URL);
+
+// Don't modify endpoints - let the backend handle routing as-is
 
 export function useApi<T = unknown>() {
   const { getAccessToken } = useAuth();
@@ -29,6 +32,8 @@ export function useApi<T = unknown>() {
 
       try {
         const token = await getAccessToken();
+        console.log('[useApi] Request to:', endpoint);
+        console.log('[useApi] Token (first 20 chars):', token ? token.substring(0, 20) + '...' : 'NULL');
 
         const headers: Record<string, string> = {
           "Content-Type": "application/json",
@@ -37,8 +42,12 @@ export function useApi<T = unknown>() {
 
         if (token) {
           headers["Authorization"] = `Bearer ${token}`;
+          console.log('[useApi] Auth header set:', headers["Authorization"].substring(0, 30) + '...');
+        } else {
+          console.log('[useApi] WARNING: No token, request will be unauthenticated!');
         }
 
+        console.log('[useApi] Endpoint:', endpoint);
         const response = await fetch(`${API_BASE_URL}${endpoint}`, {
           method: options.method || "GET",
           headers,

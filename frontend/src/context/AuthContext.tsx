@@ -112,8 +112,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const getAccessToken = useCallback(async () => {
-    return token;
-  }, [token]);
+    // Always read from localStorage to ensure stable function reference
+    // and avoid race conditions where token state hasn't been set yet
+    return localStorage.getItem(TOKEN_KEY);
+  }, []);
 
   const logout = useCallback(() => {
     setToken(null);

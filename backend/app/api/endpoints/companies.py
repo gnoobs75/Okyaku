@@ -13,7 +13,7 @@ from app.schemas.common import PaginatedResponse
 router = APIRouter()
 
 
-@router.get("/", response_model=PaginatedResponse[CompanyRead])
+@router.get("", response_model=PaginatedResponse[CompanyRead])
 async def list_companies(
     session: SessionDep,
     current_user: CurrentUserDep,
@@ -80,7 +80,7 @@ async def get_company(
     return company
 
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=CompanyRead)
+@router.post("", status_code=status.HTTP_201_CREATED, response_model=CompanyRead)
 async def create_company(
     data: CompanyCreate,
     session: SessionDep,

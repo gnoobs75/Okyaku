@@ -29,7 +29,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TutorialPanel } from "@/components/tutorial";
+import { TutorialPanel, TutorialButton } from "@/components/tutorial";
 import { useApi } from "@/hooks/useApi";
 import { useDrillDown } from "@/hooks/useDrillDown";
 import { useTutorial } from "@/context/TutorialContext";
@@ -174,6 +174,7 @@ export function DashboardPage() {
           >
             <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
           </Button>
+          {tutorial && <TutorialButton tutorial={tutorial} />}
         </div>
       </div>
 

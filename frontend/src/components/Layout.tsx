@@ -15,7 +15,7 @@ import {
   X,
   BarChart3,
   MessageSquare,
-  Calendar,
+  CalendarRange,
   Sparkles,
   FolderOpen,
   Ear,
@@ -26,6 +26,10 @@ import {
   FileBarChart,
   History,
   CalendarDays,
+  ChevronDown,
+  ChevronRight,
+  BookOpen,
+  FileText,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TutorialToggle } from "@/components/tutorial";
@@ -46,19 +50,33 @@ const navItems = [
   { path: "/tasks", label: "Tasks", icon: CheckSquare },
 ];
 
-const marketingItems = [
-  { path: "/email/campaigns", label: "Email Campaigns", icon: Mail },
-  { path: "/social", label: "Social Calendar", icon: Calendar },
-  { path: "/social/accounts", label: "Social Accounts", icon: Share2 },
-  { path: "/social/inbox", label: "Social Inbox", icon: MessageSquare },
-  { path: "/social/analytics", label: "Analytics", icon: BarChart3 },
+// Marketing sub-sections - organized by workflow
+const emailItems = [
+  { path: "/email/campaigns", label: "Campaigns", icon: Mail },
+  { path: "/email/templates", label: "Templates", icon: FileText },
+];
+
+// Publishing: Create & Schedule content
+const publishingItems = [
+  { path: "/social", label: "Schedule", icon: CalendarRange },
   { path: "/social/ai", label: "AI Content", icon: Sparkles },
-  { path: "/social/library", label: "Content Library", icon: FolderOpen },
-  { path: "/social/listening", label: "Social Listening", icon: Ear },
-  { path: "/social/hashtags", label: "Hashtag Research", icon: Hash },
+  { path: "/social/library", label: "Library", icon: FolderOpen },
+];
+
+// Engagement: Connect with audience
+const engagementItems = [
+  { path: "/social/accounts", label: "Accounts", icon: Share2 },
+  { path: "/social/inbox", label: "Inbox", icon: MessageSquare },
+  { path: "/social/automation", label: "Automation", icon: Zap },
+];
+
+// Analytics: Measure & optimize
+const analyticsItems = [
+  { path: "/social/analytics", label: "Overview", icon: BarChart3 },
+  { path: "/social/listening", label: "Listening", icon: Ear },
+  { path: "/social/hashtags", label: "Hashtags", icon: Hash },
   { path: "/social/competitors", label: "Competitors", icon: Target },
   { path: "/social/ab-testing", label: "A/B Testing", icon: FlaskConical },
-  { path: "/social/automation", label: "Automation", icon: Zap },
   { path: "/social/reports", label: "Reports", icon: FileBarChart },
 ];
 
@@ -66,13 +84,27 @@ export function Layout({ children }: LayoutProps) {
   const { user, logout } = useAuth();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+    email: false,
+    publishing: true,
+    engagement: false,
+    analytics: false,
+  });
+
+  const toggleSection = (section: string) => {
+    setExpandedSections((prev) => ({ ...prev, [section]: !prev[section] }));
+  };
 
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
   };
 
-  const NavLink = ({ item }: { item: typeof navItems[0] }) => {
+  const isSectionActive = (items: typeof navItems) => {
+    return items.some((item) => isActive(item.path));
+  };
+
+  const NavLink = ({ item, compact = false }: { item: typeof navItems[0]; compact?: boolean }) => {
     const Icon = item.icon;
     const active = isActive(item.path);
     return (
@@ -80,15 +112,76 @@ export function Layout({ children }: LayoutProps) {
         to={item.path}
         onClick={() => setSidebarOpen(false)}
         className={cn(
-          "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+          "flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-all duration-150",
+          compact && "pl-9",
           active
-            ? "bg-primary text-primary-foreground shadow-sm"
-            : "text-muted-foreground hover:text-foreground hover:bg-muted"
+            ? "bg-primary/10 text-primary font-medium"
+            : "text-muted-foreground hover:text-foreground hover:bg-muted/70"
         )}
       >
-        <Icon className="h-4 w-4 shrink-0" />
-        <span>{item.label}</span>
+        <Icon className={cn("shrink-0", compact ? "h-3.5 w-3.5" : "h-4 w-4")} />
+        <span className="truncate">{item.label}</span>
       </Link>
+    );
+  };
+
+  const SectionHeader = ({
+    label,
+    expanded,
+    onToggle,
+    hasActiveItem
+  }: {
+    label: string;
+    expanded: boolean;
+    onToggle: () => void;
+    hasActiveItem: boolean;
+  }) => (
+    <button
+      onClick={onToggle}
+      className={cn(
+        "flex items-center justify-between w-full px-3 py-2 text-xs font-medium tracking-wide rounded-md transition-colors",
+        hasActiveItem
+          ? "text-primary"
+          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+      )}
+    >
+      <span>{label}</span>
+      {expanded ? (
+        <ChevronDown className="h-3.5 w-3.5" />
+      ) : (
+        <ChevronRight className="h-3.5 w-3.5" />
+      )}
+    </button>
+  );
+
+  const CollapsibleSection = ({
+    label,
+    sectionKey,
+    items,
+  }: {
+    label: string;
+    sectionKey: string;
+    items: typeof navItems;
+  }) => {
+    const expanded = expandedSections[sectionKey];
+    const hasActiveItem = isSectionActive(items);
+
+    return (
+      <div className="space-y-0.5">
+        <SectionHeader
+          label={label}
+          expanded={expanded}
+          onToggle={() => toggleSection(sectionKey)}
+          hasActiveItem={hasActiveItem}
+        />
+        {expanded && (
+          <div className="space-y-0.5 mt-0.5">
+            {items.map((item) => (
+              <NavLink key={item.path} item={item} compact />
+            ))}
+          </div>
+        )}
+      </div>
     );
   };
 
@@ -128,10 +221,10 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             {/* Navigation */}
-            <nav className="flex-1 overflow-y-auto p-4 space-y-6 mt-14 lg:mt-0">
-              {/* Main Navigation */}
-              <div className="space-y-1">
-                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            <nav className="flex-1 overflow-y-auto scrollbar-thin p-3 space-y-1 mt-14 lg:mt-0">
+              {/* Main CRM Navigation */}
+              <div className="space-y-0.5 pb-2">
+                <p className="px-3 py-1.5 text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest">
                   CRM
                 </p>
                 {navItems.map((item) => (
@@ -139,19 +232,48 @@ export function Layout({ children }: LayoutProps) {
                 ))}
               </div>
 
-              {/* Marketing Navigation */}
-              <div className="space-y-1">
-                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="h-px bg-border/50 mx-2" />
+
+              {/* Marketing Navigation - Organized by Workflow */}
+              <div className="space-y-1 py-2">
+                <p className="px-3 py-1.5 text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest">
                   Marketing
                 </p>
-                {marketingItems.map((item) => (
-                  <NavLink key={item.path} item={item} />
-                ))}
+
+                {/* Email Marketing */}
+                <CollapsibleSection
+                  label="Email"
+                  sectionKey="email"
+                  items={emailItems}
+                />
+
+                {/* Publishing: Create & Schedule */}
+                <CollapsibleSection
+                  label="Publishing"
+                  sectionKey="publishing"
+                  items={publishingItems}
+                />
+
+                {/* Engagement: Connect & Respond */}
+                <CollapsibleSection
+                  label="Engagement"
+                  sectionKey="engagement"
+                  items={engagementItems}
+                />
+
+                {/* Analytics: Measure & Optimize */}
+                <CollapsibleSection
+                  label="Analytics"
+                  sectionKey="analytics"
+                  items={analyticsItems}
+                />
               </div>
 
-              {/* Settings */}
-              <div className="space-y-1">
-                <p className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              <div className="h-px bg-border/50 mx-2" />
+
+              {/* System */}
+              <div className="space-y-0.5 pt-2">
+                <p className="px-3 py-1.5 text-[10px] font-semibold text-muted-foreground/70 uppercase tracking-widest">
                   System
                 </p>
                 <NavLink item={{ path: "/calendar", label: "Calendar", icon: CalendarDays }} />
@@ -161,25 +283,35 @@ export function Layout({ children }: LayoutProps) {
             </nav>
 
             {/* User Section */}
-            <div className="p-4 border-t bg-muted/50">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold text-sm">
+            <div className="p-3 border-t bg-card/50 space-y-2">
+              {/* User Info */}
+              <div className="flex items-center gap-2.5 px-2 py-1.5">
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-medium text-sm shrink-0">
                   {user?.username?.charAt(0).toUpperCase() || "U"}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate">{user?.username}</p>
-                  <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                  <p className="text-sm font-medium truncate leading-tight">{user?.username}</p>
+                  <p className="text-[11px] text-muted-foreground truncate leading-tight">{user?.email}</p>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-start gap-2"
-                onClick={logout}
-              >
-                <LogOut className="h-4 w-4" />
-                Sign Out
-              </Button>
+              {/* User Menu Links */}
+              <div className="space-y-0.5">
+                <Link
+                  to="/documentation"
+                  onClick={() => setSidebarOpen(false)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  <BookOpen className="h-3.5 w-3.5" />
+                  <span>Documentation</span>
+                </Link>
+                <button
+                  onClick={logout}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors w-full"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>Sign Out</span>
+                </button>
+              </div>
             </div>
           </div>
         </aside>
