@@ -31,6 +31,7 @@ apscheduler>=3.10.0
 openai>=1.12.0             # OpenAI SDK for Ollama compatibility
 anthropic>=0.18.0          # Legacy support (optional)
 numpy>=1.24.0              # For embedding operations
+ddgs>=9.0.0                # Free web search for AI enrichment (replaces duckduckgo-search)
 
 # Testing
 pytest>=7.4.0

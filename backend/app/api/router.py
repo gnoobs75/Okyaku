@@ -19,6 +19,7 @@ from app.api.endpoints import (
     deals,
     email_campaigns,
     engagement_automation,
+    enrichment,
     exports,
     files,
     hashtag_research,
@@ -53,6 +54,7 @@ api_router.include_router(files.router, prefix="/files", tags=["files"])
 
 # CRM endpoints (requires auth)
 api_router.include_router(companies.router, prefix="/companies", tags=["companies"])
+api_router.include_router(enrichment.router, prefix="/companies", tags=["company-enrichment"])
 api_router.include_router(contacts.router, prefix="/contacts", tags=["contacts"])
 api_router.include_router(pipelines.router, prefix="/pipelines", tags=["pipelines"])
 api_router.include_router(deals.router, prefix="/deals", tags=["deals"])

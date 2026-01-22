@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, Wand2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { EnrichmentModal } from "@/components/companies/EnrichmentModal";
 import { useApi } from "@/hooks/useApi";
 import type { Company, CompanyCreate } from "@/types/crm";
+import type { EnrichmentResponse, EnrichmentField } from "@/types/enrichment";
 
 const companySizes = [
   "1-10",
@@ -29,9 +30,13 @@ export function CompanyFormPage() {
     name: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showEnrichModal, setShowEnrichModal] = useState(false);
+  const [enrichmentData, setEnrichmentData] = useState<EnrichmentResponse | null>(null);
+  const [enrichmentError, setEnrichmentError] = useState<string | null>(null);
 
   const { get: getCompany, isLoading: loadingCompany } = useApi<Company>();
   const { post, put, isLoading: saving } = useApi<Company>();
+  const { post: enrichCompany, isLoading: isEnriching, error: enrichApiError } = useApi<EnrichmentResponse>();
 
   const loadData = useCallback(async () => {
     if (id) {
@@ -95,24 +100,63 @@ export function CompanyFormPage() {
     }
   };
 
+  const handleEnrich = async () => {
+    if (!id) return;
+
+    setEnrichmentError(null);
+    setEnrichmentData(null);
+    setShowEnrichModal(true);
+
+    const result = await enrichCompany(`/companies/${id}/enrich`, {});
+    if (result) {
+      setEnrichmentData(result);
+    }
+    // Note: enrichApiError from useApi will be set on failure and passed to modal
+  };
+
+  const handleApplyEnrichment = (selectedFields: EnrichmentField[]) => {
+    const updates: Partial<CompanyCreate> = {};
+
+    for (const field of selectedFields) {
+      if (field.suggested_value) {
+        (updates as Record<string, string>)[field.field_name] = field.suggested_value;
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, ...updates }));
+  };
+
   if (loadingCompany && isEditing) {
     return <div className="flex justify-center py-8">Loading...</div>;
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div>
-          <h1 className="text-3xl font-bold">
-            {isEditing ? "Edit Company" : "New Company"}
-          </h1>
-          <p className="text-muted-foreground">
-            {isEditing ? "Update company information" : "Add a new company to your CRM"}
-          </p>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-3xl font-bold">
+              {isEditing ? "Edit Company" : "New Company"}
+            </h1>
+            <p className="text-muted-foreground">
+              {isEditing ? "Update company information" : "Add a new company to your CRM"}
+            </p>
+          </div>
         </div>
+        {isEditing && (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleEnrich}
+            disabled={isEnriching}
+          >
+            <Wand2 className="mr-2 h-4 w-4" />
+            {isEnriching ? "Enriching..." : "Enrich with AI"}
+          </Button>
+        )}
       </div>
 
       <form onSubmit={handleSubmit}>
@@ -168,11 +212,12 @@ export function CompanyFormPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="size">Company Size</Label>
-                  <Select
+                  <select
                     id="size"
                     name="size"
                     value={formData.size || ""}
                     onChange={handleChange}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   >
                     <option value="">Select size</option>
                     {companySizes.map((size) => (
@@ -180,7 +225,7 @@ export function CompanyFormPage() {
                         {size} employees
                       </option>
                     ))}
-                  </Select>
+                  </select>
                 </div>
               </div>
               <div className="space-y-2">
@@ -283,6 +328,15 @@ export function CompanyFormPage() {
           </Button>
         </div>
       </form>
+
+      <EnrichmentModal
+        open={showEnrichModal}
+        onOpenChange={setShowEnrichModal}
+        enrichmentData={enrichmentData}
+        isLoading={isEnriching}
+        error={enrichmentError || enrichApiError}
+        onApply={handleApplyEnrichment}
+      />
     </div>
   );
 }

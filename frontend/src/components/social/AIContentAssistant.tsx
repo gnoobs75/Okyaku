@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useApi } from "@/hooks/useApi";
 import type {
@@ -318,37 +318,43 @@ export function AIContentAssistant() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="space-y-2">
                   <Label>Platform</Label>
-                  <Select
-                    value={platform}
-                    onChange={(e) => setPlatform(e.target.value as SocialPlatform)}
-                  >
-                    {Object.entries(platformNames).map(([key, name]) => (
-                      <option key={key} value={key}>{name}</option>
-                    ))}
+                  <Select value={platform} onValueChange={(v) => setPlatform(v as SocialPlatform)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select platform">{platformNames[platform]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(platformNames).map(([key, name]) => (
+                        <SelectItem key={key} value={key}>{name}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label>Tone</Label>
-                  <Select
-                    value={tone}
-                    onChange={(e) => setTone(e.target.value as ContentTone)}
-                  >
-                    {Object.entries(toneLabels).map(([key, label]) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
+                  <Select value={tone} onValueChange={(v) => setTone(v as ContentTone)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select tone">{toneLabels[tone]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(toneLabels).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label>Length</Label>
-                  <Select
-                    value={length}
-                    onChange={(e) => setLength(e.target.value as ContentLength)}
-                  >
-                    {Object.entries(lengthLabels).map(([key, label]) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
+                  <Select value={length} onValueChange={(v) => setLength(v as ContentLength)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select length">{lengthLabels[length]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(lengthLabels).map(([key, label]) => (
+                        <SelectItem key={key} value={key}>{label}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
@@ -471,13 +477,15 @@ export function AIContentAssistant() {
 
               <div className="space-y-2">
                 <Label>Platform</Label>
-                <Select
-                  value={variationsPlatform}
-                  onChange={(e) => setVariationsPlatform(e.target.value as SocialPlatform)}
-                >
-                  {Object.entries(platformNames).map(([key, name]) => (
-                    <option key={key} value={key}>{name}</option>
-                  ))}
+                <Select value={variationsPlatform} onValueChange={(v) => setVariationsPlatform(v as SocialPlatform)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select platform">{platformNames[variationsPlatform]}</SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.entries(platformNames).map(([key, name]) => (
+                      <SelectItem key={key} value={key}>{name}</SelectItem>
+                    ))}
+                  </SelectContent>
                 </Select>
               </div>
 
@@ -547,25 +555,29 @@ export function AIContentAssistant() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Source Platform</Label>
-                  <Select
-                    value={sourcePlatform}
-                    onChange={(e) => setSourcePlatform(e.target.value as SocialPlatform)}
-                  >
-                    {Object.entries(platformNames).map(([key, name]) => (
-                      <option key={key} value={key}>{name}</option>
-                    ))}
+                  <Select value={sourcePlatform} onValueChange={(v) => setSourcePlatform(v as SocialPlatform)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select source">{platformNames[sourcePlatform]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(platformNames).map(([key, name]) => (
+                        <SelectItem key={key} value={key}>{name}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label>Target Platform</Label>
-                  <Select
-                    value={targetPlatform}
-                    onChange={(e) => setTargetPlatform(e.target.value as SocialPlatform)}
-                  >
-                    {Object.entries(platformNames).map(([key, name]) => (
-                      <option key={key} value={key}>{name}</option>
-                    ))}
+                  <Select value={targetPlatform} onValueChange={(v) => setTargetPlatform(v as SocialPlatform)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select target">{platformNames[targetPlatform]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(platformNames).map(([key, name]) => (
+                        <SelectItem key={key} value={key}>{name}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
               </div>
@@ -638,13 +650,15 @@ export function AIContentAssistant() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Platform</Label>
-                  <Select
-                    value={improvePlatform}
-                    onChange={(e) => setImprovePlatform(e.target.value as SocialPlatform)}
-                  >
-                    {Object.entries(platformNames).map(([key, name]) => (
-                      <option key={key} value={key}>{name}</option>
-                    ))}
+                  <Select value={improvePlatform} onValueChange={(v) => setImprovePlatform(v as SocialPlatform)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select platform">{platformNames[improvePlatform]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(platformNames).map(([key, name]) => (
+                        <SelectItem key={key} value={key}>{name}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
@@ -761,25 +775,29 @@ export function AIContentAssistant() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label>Platform</Label>
-                  <Select
-                    value={hashtagPlatform}
-                    onChange={(e) => setHashtagPlatform(e.target.value as SocialPlatform)}
-                  >
-                    {Object.entries(platformNames).map(([key, name]) => (
-                      <option key={key} value={key}>{name}</option>
-                    ))}
+                  <Select value={hashtagPlatform} onValueChange={(v) => setHashtagPlatform(v as SocialPlatform)}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select platform">{platformNames[hashtagPlatform]}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.entries(platformNames).map(([key, name]) => (
+                        <SelectItem key={key} value={key}>{name}</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
                   <Label>Number of Hashtags</Label>
-                  <Select
-                    value={hashtagCount.toString()}
-                    onChange={(e) => setHashtagCount(parseInt(e.target.value))}
-                  >
-                    {[3, 5, 7, 10].map((num) => (
-                      <option key={num} value={num}>{num} hashtags</option>
-                    ))}
+                  <Select value={hashtagCount.toString()} onValueChange={(v) => setHashtagCount(parseInt(v))}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select count">{hashtagCount} hashtags</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[3, 5, 7, 10].map((num) => (
+                        <SelectItem key={num} value={num.toString()}>{num} hashtags</SelectItem>
+                      ))}
+                    </SelectContent>
                   </Select>
                 </div>
               </div>
